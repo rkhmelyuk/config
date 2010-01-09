@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2010 Prutsoft
+ * All rights reserved.
+ *
+ * Application configuration framework.
+ */
+
 package com.prutsoft.config.service;
 
 import com.prutsoft.config.Configuration;
