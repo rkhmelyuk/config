@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Prutsoft
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
  * All rights reserved.
  *
  * Application configuration framework.
@@ -7,7 +7,7 @@
 
 package com.prutsoft.config.service;
 
-import com.prutsoft.config.ConfigurationWrapper;
+import com.prutsoft.config.ConcurrentConfiguration;
 import com.prutsoft.config.exception.ConfigurationException;
 import com.prutsoft.config.exception.ConfigurationLoadException;
 import com.prutsoft.config.resource.Resource;
@@ -49,7 +49,7 @@ public interface ConfigurationLoader {
      * @param resource the configuration resource to reload from.
      * @throws ConfigurationLoadException error to reload configuration.
      */
-    void reload(@NotNull ConfigurationWrapper configuration, @NotNull Resource resource) throws ConfigurationLoadException;
+    void reload(@NotNull ConcurrentConfiguration configuration, @NotNull Resource resource) throws ConfigurationLoadException;
 
 
 }

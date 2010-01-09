@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Prutsoft
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
  * All rights reserved.
  *
  * Application configuration framework.
@@ -42,6 +42,7 @@ public class XmlConfigurationParser implements ConfigurationParser {
     private static final Logger log = LoggerFactory.getLogger(XmlConfigurationParser.class);
 
     private ElementParser metadataParser;
+    private ElementParser reloadPolicyParser;
     private ElementParser propertyParser;
     private ElementParser expressionParser;
     private ElementParser switchParser;
@@ -57,6 +58,17 @@ public class XmlConfigurationParser implements ConfigurationParser {
 
     public void setMetadataParser(ElementParser metadataParser) {
         this.metadataParser = metadataParser;
+    }
+
+    public ElementParser getReloadPolicyParser() {
+        if (reloadPolicyParser == null) {
+            reloadPolicyParser = new ReloadPolicyParser();
+        }
+        return reloadPolicyParser;
+    }
+
+    public void setReloadPolicyParser(ElementParser reloadPolicyParser) {
+        this.reloadPolicyParser = reloadPolicyParser;
     }
 
     public ElementParser getPropertyParser() {
@@ -157,8 +169,9 @@ public class XmlConfigurationParser implements ConfigurationParser {
         parsers.add(getExpressionParser());
         parsers.add(getSetParser());
         parsers.add(getSwitchParser());
-        parsers.add(getMetadataParser());
         parsers.add(getPojoParser());
+        parsers.add(getMetadataParser());
+        parsers.add(getReloadPolicyParser());
         return parsers;
     }
 

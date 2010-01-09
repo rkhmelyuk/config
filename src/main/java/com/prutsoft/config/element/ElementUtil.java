@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Prutsoft
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
  * All rights reserved.
  *
  * Application configuration framework.
@@ -95,9 +95,6 @@ public class ElementUtil {
         if (path == null || path.length == 0) {
             throw new ValueAccessException("No value found: path is wrong.");
         }
-
-
-        // TODO - Think how to increase the performance.
 
         final String name = path[0];
         if (path.length == 1) {

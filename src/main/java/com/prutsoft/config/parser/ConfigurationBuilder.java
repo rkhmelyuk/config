@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Prutsoft
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
  * All rights reserved.
  *
  * Application configuration framework.
@@ -17,6 +17,7 @@ import com.prutsoft.config.element.metadata.Metadata;
 import com.prutsoft.config.element.metadata.MetadataProperty;
 import com.prutsoft.config.element.pojo.PojoElement;
 import com.prutsoft.config.element.property.Property;
+import com.prutsoft.config.element.reload.ReloadPolicy;
 import com.prutsoft.config.element.set.PropertySet;
 import com.prutsoft.config.element.value.Value;
 import com.prutsoft.config.exception.ConfigurationException;
@@ -38,6 +39,7 @@ public class ConfigurationBuilder {
 
     private String name;
     private Version version;
+    private ReloadPolicy reloadPolicy;
 
     private List<Property> properties = new ArrayList<Property>();
     private List<PropertySet> sets = new ArrayList<PropertySet>();
@@ -66,6 +68,14 @@ public class ConfigurationBuilder {
 
     public void setVersion(String version) {
         this.version = Version.parse(version);
+    }
+
+    public ReloadPolicy getReloadPolicy() {
+        return reloadPolicy;
+    }
+
+    public void setReloadPolicy(ReloadPolicy reloadPolicy) {
+        this.reloadPolicy = reloadPolicy;
     }
 
     public BuilderBuffer getBuffer() {
@@ -198,6 +208,8 @@ public class ConfigurationBuilder {
 
     public Configuration toConfiguration() throws ConfigurationException {
         final ConfigurationImpl config = new ConfigurationImpl(name, version);
+
+        config.setReloadPolicy(reloadPolicy);
 
         addMetadata(config);
 

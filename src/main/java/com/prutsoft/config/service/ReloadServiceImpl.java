@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Prutsoft
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
  * All rights reserved.
  *
  * Application configuration framework.
@@ -7,8 +7,8 @@
 
 package com.prutsoft.config.service;
 
+import com.prutsoft.config.ConcurrentConfiguration;
 import com.prutsoft.config.Configuration;
-import com.prutsoft.config.ConfigurationWrapper;
 import com.prutsoft.config.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +28,8 @@ public class ReloadServiceImpl implements ReloadService {
 
     private static final Logger log = LoggerFactory.getLogger(ReloadServiceImpl.class);
 
+    private static final long ONE_SECOND = 1000L;
+
     private ConfigurationLoader configurationLoader;
 
     private Timer configurationReloadTimer = new Timer("Configuration Reload Timer", true);
@@ -39,7 +41,9 @@ public class ReloadServiceImpl implements ReloadService {
 
         configurationHolder.addNewConfigurationListener(new ConfigurationHolderChangeListener() {
             public void process(Configuration configuration, Resource resource) {
-                startFor(configuration, resource);
+                if (configuration.getReloadPolicy() != null && configuration.getReloadPolicy().isOnChange()) {
+                    startFor(configuration, resource);
+                }
             }
         });
         configurationHolder.addRemoveConfigurationListener(new ConfigurationHolderChangeListener() {
@@ -107,7 +111,7 @@ public class ReloadServiceImpl implements ReloadService {
         final TimerTask task = new ConfigurationReloadTimerTask(configuration, resource, configurationLoader);
         reloadTasks.put(configuration, task);
 
-        final long reloadMillis = 5000L; // TODO - configuration.getLoadPolicy().getCheckEverySeconds() * 1000L;
+        final long reloadMillis = configuration.getReloadPolicy().getCheckEvery() * ONE_SECOND;
         configurationReloadTimer.schedule(task, reloadMillis, reloadMillis);
     }
 
@@ -139,7 +143,7 @@ public class ReloadServiceImpl implements ReloadService {
         public void run() {
             if (!resource.isChanged()) return;
             try {
-                configurationLoader.reload((ConfigurationWrapper) configuration, resource);
+                configurationLoader.reload((ConcurrentConfiguration) configuration, resource);
                 log.debug("Reloaded configuration [{}]", configuration);
             }
             catch (Exception e) {

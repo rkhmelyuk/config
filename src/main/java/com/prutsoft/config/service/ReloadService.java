@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Prutsoft
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
  * All rights reserved.
  *
  * Application configuration framework.
@@ -11,6 +11,8 @@ import com.prutsoft.config.Configuration;
 
 /**
  * This service is responsible for reloading changed resources.
+ * Is useful to reload the configuration from the file after it was changed,
+ * or from server after new configuration was published or old was updated etc.
  *
  * @author Ruslan Khmelyuk
  * @since 1.0.0, 2010-01-07

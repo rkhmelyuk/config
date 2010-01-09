@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Prutsoft
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
  * All rights reserved.
  *
  * Application configuration framework.
@@ -9,6 +9,7 @@ package com.prutsoft.config;
 
 import com.prutsoft.config.element.ElementUtil;
 import com.prutsoft.config.element.metadata.Metadata;
+import com.prutsoft.config.element.reload.ReloadPolicy;
 import com.prutsoft.core.ToStringBuilder;
 import com.prutsoft.core.asserts.ArgumentAssert;
 import com.prutsoft.core.code.Warnings;
@@ -27,6 +28,7 @@ public class ConfigurationImpl implements Configuration {
     private String name;
     private Version version;
     private Metadata metadata;
+    private ReloadPolicy reloadPolicy;
 
     private Map<String, NamedElement> elements = new HashMap<String, NamedElement>();
 
@@ -61,6 +63,14 @@ public class ConfigurationImpl implements Configuration {
 
     public void setMetadata(Metadata metadata) {
         this.metadata = metadata;
+    }
+
+    public ReloadPolicy getReloadPolicy() {
+        return reloadPolicy;
+    }
+
+    public void setReloadPolicy(ReloadPolicy reloadPolicy) {
+        this.reloadPolicy = reloadPolicy;
     }
 
     public NamedElement getElement(String name) {

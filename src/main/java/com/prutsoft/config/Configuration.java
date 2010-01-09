@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Prutsoft
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
  * All rights reserved.
  *
  * Application configuration framework.
@@ -8,6 +8,7 @@
 package com.prutsoft.config;
 
 import com.prutsoft.config.element.metadata.Metadata;
+import com.prutsoft.config.element.reload.ReloadPolicy;
 import com.prutsoft.core.annotation.NotNull;
 import com.prutsoft.core.annotation.Nullable;
 
@@ -46,6 +47,13 @@ public interface Configuration extends NamedElement, NamedElementsContainer {
      */
     @NotNull
     Metadata getMetadata();
+
+    /**
+     * Gets the configuration reload policy.
+     * 
+     * @return the configuration reload policy.
+     */
+    ReloadPolicy getReloadPolicy();
 
     /**
      * Gets the pojo value.

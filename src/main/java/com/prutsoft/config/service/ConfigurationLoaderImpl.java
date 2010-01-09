@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Prutsoft
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
  * All rights reserved.
  *
  * Application configuration framework.
@@ -7,8 +7,8 @@
 
 package com.prutsoft.config.service;
 
+import com.prutsoft.config.ConcurrentConfiguration;
 import com.prutsoft.config.Configuration;
-import com.prutsoft.config.ConfigurationWrapper;
 import com.prutsoft.config.exception.ConfigurationLoadException;
 import com.prutsoft.config.parser.ConfigurationParser;
 import com.prutsoft.config.parser.xml.XmlConfigurationParser;
@@ -50,7 +50,7 @@ public class ConfigurationLoaderImpl implements ConfigurationLoader {
             }
 
             Configuration configuration = parser.parse(resource);
-            holder.addConfiguration(new ConfigurationWrapper(configuration), resource);
+            holder.addConfiguration(new ConcurrentConfiguration(configuration), resource);
         }
         catch (ConfigurationLoadException e) {
             throw e;
@@ -72,7 +72,7 @@ public class ConfigurationLoaderImpl implements ConfigurationLoader {
         }
     }
 
-    public void reload(ConfigurationWrapper configuration, Resource resource) throws ConfigurationLoadException {
+    public void reload(ConcurrentConfiguration configuration, Resource resource) throws ConfigurationLoadException {
         ArgumentAssert.isNotNull(configuration, "Configuration is required.");
         ArgumentAssert.isNotNull(resource, "Resource can't be null.");
 

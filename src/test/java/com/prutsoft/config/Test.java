@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
+ * All rights reserved.
+ *
+ * Application configuration framework.
+ */
+
 package com.prutsoft.config;
 
 import com.prutsoft.config.service.ConfigurationService;
@@ -17,6 +24,9 @@ public class Test {
                 "<property name='x' value='y'/>" +
                 "<property name='x2' value='y2'/>" +
                 "</metadata>" +
+                "<reload>" +
+                "<onchange check-every='5s'/>" +
+                "</reload>" +
                 "<expression name='t' value='\"wdt\"'/>" +
                 "<property name='t1'><value type='integer'>2292</value></property>" +
                 "<set name='x1'><set name='x1'><property name='xxx' value='23' type='integer'/></set><property name='x2' value='xx'/></set>" +
