@@ -40,6 +40,6 @@ public class ValueParser implements ElementParser {
 
         builder.getBuffer().setValue(
                 RegularValue.create(node.getTextContent(),
-                ValueTypeRegistry.getValueType(type)));
+                ValueTypeRegistry.getInstance().getValueType(type)));
     }
 }

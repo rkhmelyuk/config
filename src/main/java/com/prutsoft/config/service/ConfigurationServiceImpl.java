@@ -9,7 +9,6 @@ package com.prutsoft.config.service;
 
 import com.prutsoft.config.Configuration;
 import com.prutsoft.config.Version;
-import com.prutsoft.config.element.value.ValueTypeRegistry;
 import com.prutsoft.config.exception.ConfigurationException;
 import com.prutsoft.config.resource.ResourceRegistry;
 import com.prutsoft.core.asserts.ArgumentAssert;
@@ -47,10 +46,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     public void setReloadService(ReloadService reloadService) {
         this.reloadService = reloadService;
-    }
-
-    public ValueTypeRegistry getValueTypeRegistry() {
-        return new ValueTypeRegistry();
     }
 
     public void destroy() {

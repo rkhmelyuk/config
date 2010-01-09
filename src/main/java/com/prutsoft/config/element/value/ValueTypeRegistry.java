@@ -23,13 +23,19 @@ public class ValueTypeRegistry {
 
     private static final String STRING_VALUE_TYPE = "string";
 
+    private static final ValueTypeRegistry registry = new ValueTypeRegistry();
+
+    public static ValueTypeRegistry getInstance() {
+        return registry;
+    }
+
     /**
      * The map of value types. There could be only one value type for specified type name.
      * There could be few type names for the same value type.
      */
-    private static final Map<String, ValueType> VALUE_TYPES;
+    private final Map<String, ValueType> VALUE_TYPES;
 
-    static {
+    private ValueTypeRegistry() {
         VALUE_TYPES = new HashMap<String, ValueType>();
 
         registerDefaultValueTypes();
@@ -38,7 +44,7 @@ public class ValueTypeRegistry {
     /**
      * Registers default value types.
      */
-    private static void registerDefaultValueTypes() {
+    private void registerDefaultValueTypes() {
         registerValueType(STRING_VALUE_TYPE, new StringValueType());
         registerValueType("integer", new IntegerValueType());
         registerValueType("float", new FloatValueType());
@@ -61,11 +67,11 @@ public class ValueTypeRegistry {
      * If value type with such name exists already, than don't override it, but return {@code false}.
      * Otherwise add new value type and return {@code true}.
      *
-     * @param name the name of value type; can't be null or empty.
+     * @param name      the name of value type; can't be null or empty.
      * @param valueType the value type; can't be null.
      * @return {@code true} if value type is registered successfully, otherwise {@code false}.
      */
-    public static boolean registerValueType(@NotNull String name, @NotNull ValueType valueType) {
+    public boolean registerValueType(@NotNull String name, @NotNull ValueType valueType) {
         ArgumentAssert.isNotEmpty(name, "Name is required.");
         ArgumentAssert.isNotNull(valueType, "Value type can't be null.");
 
@@ -85,7 +91,7 @@ public class ValueTypeRegistry {
      * @param name the name of value type; can't be null or empty.
      * @return {@code true} if value type is removed successfully, otherwise {@code false}.
      */
-    public static boolean removeValueType(@NotNull String name) {
+    public boolean removeValueType(@NotNull String name) {
         ArgumentAssert.isNotEmpty(name, "Name is required.");
         return VALUE_TYPES.remove(name) != null;
     }
@@ -94,14 +100,14 @@ public class ValueTypeRegistry {
      * Adds the alias for specified value type name.
      * If value type name is not exist yet, than returns {@code false}.
      * If such alias or value type name like alias exist already than returns {@code false}.
-     *
+     * <p/>
      * Returns {@code true} only when alias is created successfully.
      *
-     * @param alias the alias to add; can't be null or empty.
+     * @param alias         the alias to add; can't be null or empty.
      * @param valueTypeName the name of the value type to reference to; can't be null or empty.
      * @return {@code true} if alias was added successfully, otherwise returns {@code false}.
      */
-    public static boolean addAlias(@NotNull String alias, @NotNull String valueTypeName) {
+    public boolean addAlias(@NotNull String alias, @NotNull String valueTypeName) {
         ArgumentAssert.isNotEmpty(alias, "Alias is required");
         ArgumentAssert.isNotEmpty(valueTypeName, "Value type name is required");
 
@@ -121,7 +127,7 @@ public class ValueTypeRegistry {
      * @param name the name or alias of the value type.
      * @return the value type for specified name.
      */
-    public static ValueType getValueType(String name) {
+    public ValueType getValueType(String name) {
         return name != null ? VALUE_TYPES.get(name)
                 : VALUE_TYPES.get(STRING_VALUE_TYPE);
     }

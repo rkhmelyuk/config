@@ -9,7 +9,6 @@ package com.prutsoft.config.service;
 
 import com.prutsoft.config.Configuration;
 import com.prutsoft.config.Version;
-import com.prutsoft.config.element.value.ValueTypeRegistry;
 import com.prutsoft.config.exception.ConfigurationException;
 import com.prutsoft.config.resource.ResourceRegistry;
 
@@ -29,13 +28,6 @@ public interface ConfigurationService {
      * @return the resource registry.
      */
     ResourceRegistry getResourceRegistry();
-
-    /**
-     * Gets the value type registry.
-     *
-     * @return the value type registry.
-     */
-    ValueTypeRegistry getValueTypeRegistry();
 
     /**
      * Gets the configuration reload service.
@@ -76,7 +68,7 @@ public interface ConfigurationService {
     /**
      * Gets configuration with specified name and version
      *
-     * @param name the configuration name; can't be null.
+     * @param name    the configuration name; can't be null.
      * @param version the configuration version; can't be null.
      * @return the configuration with specified name and version or {@code null} if not found.
      */
@@ -85,7 +77,7 @@ public interface ConfigurationService {
     /**
      * Gets configuration with specified name and version
      *
-     * @param name the configuration name; can't be null.
+     * @param name    the configuration name; can't be null.
      * @param version the configuration version; can't be null.
      * @return the configuration with specified name and version or {@code null} if not found.
      */

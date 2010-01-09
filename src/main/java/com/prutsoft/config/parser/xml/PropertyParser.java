@@ -79,7 +79,7 @@ public class PropertyParser implements ElementParser {
 
             // set property value
             property.setValue(RegularValue.create(nodeValue,
-                    ValueTypeRegistry.getValueType(type)));
+                    ValueTypeRegistry.getInstance().getValueType(type)));
         }
 
         builder.getBuffer().clear();
