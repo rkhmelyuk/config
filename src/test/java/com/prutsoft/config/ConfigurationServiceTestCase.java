@@ -52,7 +52,7 @@ public class ConfigurationServiceTestCase {
 
     @Test
     public void testConfigurationInfo() throws Exception {
-        Configuration config = getConfigurationService().getConfiguration("test", "1.0.23");
+        Configuration config = getConfigurationService().configuration("test", "1.0.23");
 
         Assert.assertEquals("test", config.getName());
         Assert.assertEquals(Version.parse("1.0.23"), config.getVersion());
@@ -61,14 +61,14 @@ public class ConfigurationServiceTestCase {
 
     @Test
     public void testProperty() throws Exception {
-        Configuration config = getConfigurationService().getConfiguration("test", "1.0.23");
+        Configuration config = getConfigurationService().configuration("test", "1.0.23");
 
         Assert.assertEquals(2292, (long) config.getInteger("t1"));
     }
 
     @Test
     public void testSet() throws Exception {
-        Configuration config = getConfigurationService().getConfiguration("test", "1.0.23");
+        Configuration config = getConfigurationService().configuration("test", "1.0.23");
 
         Assert.assertEquals(23, (long) config.getInteger("x1:x1:xxx"));
         Assert.assertEquals(23, (long) config.getInteger("x1", "x1", "xxx"));
@@ -76,7 +76,7 @@ public class ConfigurationServiceTestCase {
 
     @Test
     public void testExpression() throws Exception {
-        Configuration config = getConfigurationService().getConfiguration("test", "1.0.23");
+        Configuration config = getConfigurationService().configuration("test", "1.0.23");
 
         Assert.assertEquals("wdt", config.getString("t"));
         Assert.assertEquals(50, (long) config.getLong("tL"));
@@ -84,7 +84,7 @@ public class ConfigurationServiceTestCase {
 
     @Test
     public void testSwitch() throws Exception {
-        Configuration config = getConfigurationService().getConfiguration("test", "1.0.23");
+        Configuration config = getConfigurationService().configuration("test", "1.0.23");
 
         Assert.assertEquals("x1", config.getString("ttk", new ContextMap("x", 1)));
         Assert.assertEquals("x2", config.getString("ttk", new ContextMap("x", 2)));
@@ -94,7 +94,7 @@ public class ConfigurationServiceTestCase {
 
     @Test
     public void testPojo() throws Exception {
-        Configuration config = getConfigurationService().getConfiguration("test", "1.0.23");
+        Configuration config = getConfigurationService().configuration("test", "1.0.23");
 
         Student s = (Student) config.getValue("student");
 
