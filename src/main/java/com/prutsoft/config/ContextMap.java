@@ -10,6 +10,7 @@ package com.prutsoft.config;
 import com.prutsoft.core.asserts.ArgumentAssert;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,18 @@ import java.util.Map;
  * @since 1.0.0, 2010-01-04
  */
 public class ContextMap implements Serializable {
+
+    private static final ContextMap EMPTY_CONTEXT_MAP = new ReadOnlyContextMap();
+
+    /**
+     * Returns new empty content map that is unmodifiable
+     * @return the empty unmodifiable context map.
+     */
+    public static ContextMap empty() {
+        return EMPTY_CONTEXT_MAP;
+    }
+
+    // ---------------------------------------------------------------- Instance members
 
     private Map<String, Object> map = new HashMap<String, Object>();
 
@@ -136,4 +149,75 @@ public class ContextMap implements Serializable {
     public void putAll(Map<String, Object> map) {
         this.map.putAll(map);
     }
+
+    // ------------------------------------------------------------
+
+    private static class ReadOnlyContextMap extends ContextMap {
+
+        @Override
+        public Map<String, Object> getMap() {
+            return Collections.emptyMap();
+        }
+
+        @Override
+        public Object put(String key, Object value) {
+            throw new UnsupportedOperationException("Operation is not supported.");
+        }
+
+        @Override
+        public void put(String key1, Object value1, String key2, Object value2) {
+            throw new UnsupportedOperationException("Operation is not supported.");
+        }
+
+        @Override
+        public void put(String key1, Object value1, String key2, Object value2, String key3, Object value3) {
+            throw new UnsupportedOperationException("Operation is not supported.");
+        }
+
+        @Override
+        public void put(String key1, Object value1, String key2, Object value2,
+                        String key3, Object value3, String key4, Object value4) {
+            throw new UnsupportedOperationException("Operation is not supported.");
+        }
+
+        @Override
+        public void put(String key1, Object value1, String key2, Object value2,
+                        String key3, Object value3, String key4, Object value4,
+                        String key5, Object value5) {
+            throw new UnsupportedOperationException("Operation is not supported.");
+        }
+
+        @Override
+        public void put(String key1, Object value1, String key2, Object value2,
+                        String key3, Object value3, String key4, Object value4,
+                        String key5, Object value5, String key6, Object value6) {
+            throw new UnsupportedOperationException("Operation is not supported.");
+        }
+
+        @Override
+        public void put(Object... keysAndValues) {
+            throw new UnsupportedOperationException("Operation is not supported.");
+        }
+
+        @Override
+        public Object get(String key) {
+            return null;
+        }
+
+        @Override
+        public boolean contains(String key) {
+            return false;
+        }
+
+        @Override
+        public Object remove(String key) {
+            throw new UnsupportedOperationException("Operation is not supported.");
+        }
+
+        @Override
+        public void putAll(Map<String, Object> map) {
+            throw new UnsupportedOperationException("Operation is not supported.");
+        }
+    }
+
 }
