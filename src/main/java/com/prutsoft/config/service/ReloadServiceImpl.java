@@ -7,8 +7,8 @@
 
 package com.prutsoft.config.service;
 
-import com.prutsoft.config.ConcurrentConfiguration;
 import com.prutsoft.config.Configuration;
+import com.prutsoft.config.ReloadableConfiguration;
 import com.prutsoft.config.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,7 +143,7 @@ public class ReloadServiceImpl implements ReloadService {
         public void run() {
             if (!resource.isChanged()) return;
             try {
-                configurationLoader.reload((ConcurrentConfiguration) configuration, resource);
+                configurationLoader.reload((ReloadableConfiguration) configuration, resource);
                 log.debug("Reloaded configuration [{}]", configuration);
             }
             catch (Exception e) {

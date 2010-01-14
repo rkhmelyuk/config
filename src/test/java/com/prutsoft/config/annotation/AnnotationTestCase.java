@@ -46,4 +46,19 @@ public class AnnotationTestCase {
 
         Assert.assertEquals("Hello Ruslan!", config.sayHello("Ruslan", "!"));
     }
+
+    @Test
+    public void testStaticProperty() throws Exception {
+        TestConfig config = getConfigurationService().staticConfiguration(TestConfig.class, "test");
+
+        Assert.assertEquals("Ruslan", config.getFirstName());
+        Assert.assertEquals("Khmelyuk", config.getLastName());
+    }
+
+    @Test
+    public void testStaticExpression() throws Exception {
+        TestConfig config = getConfigurationService().staticConfiguration(TestConfig.class, "test", "1.0.0");
+
+        Assert.assertEquals("Hello Ruslan!", config.sayHello("Ruslan", "!"));
+    }
 }

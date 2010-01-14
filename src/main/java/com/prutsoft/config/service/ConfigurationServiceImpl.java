@@ -8,6 +8,7 @@
 package com.prutsoft.config.service;
 
 import com.prutsoft.config.Configuration;
+import com.prutsoft.config.ConfigurationWrapper;
 import com.prutsoft.config.Version;
 import com.prutsoft.config.annotation.ConfigurationBindException;
 import com.prutsoft.config.exception.ConfigurationException;
@@ -109,15 +110,18 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                     + com.prutsoft.config.annotation.Configuration.class.getName());
         }
 
-        final Configuration configuration = configuration(name, version);
+        Configuration configuration = configuration(name, version);
 
         if (configuration == null) {
             throw new ConfigurationBindException("Can't find configuration with name "
                     + name + " and version " + version);
         }
+        else if (configuration instanceof ConfigurationWrapper) {
+            configuration = ((ConfigurationWrapper) configuration).getConfiguration();
+        }
 
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(),
-                new Class[] {clazz}, new StaticConfigInvocationHandler(configuration));
+                new Class[] {clazz}, new ConfigurationInvocationHandler(configuration));
     }
 
     public <T> T dynamicConfiguration(Class<T> clazz, String name) {
@@ -148,6 +152,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
 
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(),
-                new Class[] {clazz}, new DynamicConfigInvocationHandler(configuration));
+                new Class[] {clazz}, new ConfigurationInvocationHandler(configuration));
     }
 }

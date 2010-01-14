@@ -7,8 +7,8 @@
 
 package com.prutsoft.config.service;
 
-import com.prutsoft.config.ConcurrentConfiguration;
 import com.prutsoft.config.Configuration;
+import com.prutsoft.config.ReloadableConfiguration;
 import com.prutsoft.config.exception.ConfigurationLoadException;
 import com.prutsoft.config.parser.ConfigurationParser;
 import com.prutsoft.config.parser.xml.XmlConfigurationParser;
@@ -50,7 +50,7 @@ public class ConfigurationLoaderImpl implements ConfigurationLoader {
             }
 
             Configuration configuration = parser.parse(resource);
-            holder.addConfiguration(new ConcurrentConfiguration(configuration), resource);
+            holder.addConfiguration(new ReloadableConfiguration(configuration), resource);
         }
         catch (ConfigurationLoadException e) {
             throw e;
@@ -72,7 +72,7 @@ public class ConfigurationLoaderImpl implements ConfigurationLoader {
         }
     }
 
-    public void reload(ConcurrentConfiguration configuration, Resource resource) throws ConfigurationLoadException {
+    public void reload(ReloadableConfiguration configuration, Resource resource) throws ConfigurationLoadException {
         ArgumentAssert.isNotNull(configuration, "Configuration is required.");
         ArgumentAssert.isNotNull(resource, "Resource can't be null.");
 

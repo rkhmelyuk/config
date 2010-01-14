@@ -20,14 +20,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * This is configuration wrapper. Used to replace old configuration with new one
- * while reload.
+ * while reload. Use concurent locking to be safe on substitute configuration.
  *
  * @author Ruslan Khmelyuk
  * @since 1.0.0, 2010-01-07
  *
  * TODO - Convert to the proxy implementation
  */
-public class ConcurrentConfiguration implements Configuration, Serializable {
+public class ReloadableConfiguration implements Configuration, ConfigurationWrapper, Serializable {
 
     /**
      * The read-write lock used to lock read of configuration while
@@ -37,8 +37,12 @@ public class ConcurrentConfiguration implements Configuration, Serializable {
 
     private Configuration configuration;
 
-    public ConcurrentConfiguration(Configuration configuration) {
+    public ReloadableConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     public void setConfiguration(Configuration newConfiguration) {
