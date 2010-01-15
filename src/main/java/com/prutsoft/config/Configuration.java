@@ -12,6 +12,7 @@ import com.prutsoft.config.element.reload.ReloadPolicy;
 import com.prutsoft.core.annotation.NotNull;
 import com.prutsoft.core.annotation.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,6 +55,14 @@ public interface Configuration extends NamedElement, NamedElementsContainer {
      * @return the configuration reload policy.
      */
     ReloadPolicy getReloadPolicy();
+
+    /**
+     * Gets the collection of included configurations.
+     * If none configuration is included, than result collection will be empty.
+     *
+     * @return the collection with included configurations.
+     */
+    Collection<Configuration> getIncludedConfigurations();
 
     /**
      * Gets the pojo value.

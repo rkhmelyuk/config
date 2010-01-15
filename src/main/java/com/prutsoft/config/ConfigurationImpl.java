@@ -30,6 +30,7 @@ public class ConfigurationImpl implements Configuration {
     private Metadata metadata;
     private ReloadPolicy reloadPolicy;
 
+    private List<Configuration> configurations = new ArrayList<Configuration>();
     private Map<String, NamedElement> elements = new HashMap<String, NamedElement>();
 
     public ConfigurationImpl(String name) {
@@ -71,6 +72,10 @@ public class ConfigurationImpl implements Configuration {
 
     public void setReloadPolicy(ReloadPolicy reloadPolicy) {
         this.reloadPolicy = reloadPolicy;
+    }
+
+    public Collection<Configuration> getIncludedConfigurations() {
+        return configurations;
     }
 
     public NamedElement getElement(String name) {
