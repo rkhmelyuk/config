@@ -26,6 +26,10 @@ public class ContextMap implements Serializable {
     public ContextMap() {
     }
 
+    public ContextMap(Map<String, Object> map) {
+        this.map.putAll(map);
+    }
+
     public ContextMap(String key, Object value) {
         put(key, value);
     }

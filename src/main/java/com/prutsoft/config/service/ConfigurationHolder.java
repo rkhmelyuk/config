@@ -158,6 +158,9 @@ public class ConfigurationHolder {
                         return each;
                     }
                 }
+                if (version == null && list.size() == 1)  {
+                    return list.get(0);
+                }
             }
         }
         return null;
