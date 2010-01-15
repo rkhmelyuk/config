@@ -27,11 +27,11 @@ import java.util.Map;
  * @author Ruslan Khmelyuk
  * @since 1.1.0, 2010-01-10
  */
-class DynamicConfigInvocationHandler implements InvocationHandler {
+class ConfigurationInvocationHandler implements InvocationHandler {
 
     private final Configuration configuration;
 
-    DynamicConfigInvocationHandler(Configuration configuration) {
+    ConfigurationInvocationHandler(Configuration configuration) {
         this.configuration = configuration;
     }
 
