@@ -1,0 +1,14 @@
+<!--
+  ~ Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
+  ~ All rights reserved.
+  ~
+  ~ Application configuration framework.
+  -->
+
+<configuration name="config2" version="1.0.0">
+
+    <include path="classpath:com/prutsoft/config/test/included/config3.xml"/>
+
+    <property name="John" value="Smith"/>
+    
+</configuration>

@@ -48,6 +48,9 @@ public class ConfigurationBuilder {
     private List<ExpressionElement> expressions = new ArrayList<ExpressionElement>();
     private List<MetadataProperty> metadataProperties = new ArrayList<MetadataProperty>();
 
+    private List<String> configurationsPaths = new ArrayList<String>();
+    private List<Configuration> configurations = new ArrayList<Configuration>();
+
     private final BuilderBuffer buffer = new BuilderBuffer();
 
     public String getName() {
@@ -80,6 +83,28 @@ public class ConfigurationBuilder {
 
     public BuilderBuffer getBuffer() {
         return buffer;
+    }
+
+    public boolean addConfigurationPath(String configuration) {
+        ArgumentAssert.isNotEmpty(configuration, "Configuration can't be null.");
+        return configurationsPaths.add(configuration);
+    }
+
+    public boolean removeConfigurationPath(String configuration) {
+        return configurationsPaths.remove(configuration);
+    }
+
+    public List<String> getConfigurationPaths() {
+        return configurationsPaths;
+    }
+
+    public boolean addConfiguration(Configuration configuration) {
+        ArgumentAssert.isNotNull(configuration, "Configuration can't be null.");
+        return configurations.add(configuration);
+    }
+
+    public boolean removeConfiguration(Configuration configuration) {
+        return configurations.remove(configuration);
     }
 
     public boolean addProperty(Property property) {
@@ -212,6 +237,7 @@ public class ConfigurationBuilder {
         config.setReloadPolicy(reloadPolicy);
 
         addMetadata(config);
+        addConfigurations(config);
 
         addSets(config);
         addSwitches(config);
@@ -220,6 +246,10 @@ public class ConfigurationBuilder {
         addPojos(config);
 
         return config;
+    }
+
+    private void addConfigurations(ConfigurationImpl config) {
+        config.getIncludedConfigurations().addAll(configurations);
     }
 
     private void addProperties(ConfigurationImpl config) throws ConfigurationException {

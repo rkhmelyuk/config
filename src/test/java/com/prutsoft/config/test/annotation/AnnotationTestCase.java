@@ -5,7 +5,7 @@
  * Application configuration framework.
  */
 
-package com.prutsoft.config.annotation;
+package com.prutsoft.config.test.annotation;
 
 import com.prutsoft.config.service.ConfigurationService;
 import com.prutsoft.config.service.ConfigurationServiceImpl;

@@ -7,7 +7,6 @@
 
 package com.prutsoft.config.parser;
 
-import com.prutsoft.config.Configuration;
 import com.prutsoft.config.exception.ParseException;
 import com.prutsoft.config.resource.Resource;
 import com.prutsoft.core.annotation.NotNull;
@@ -25,14 +24,14 @@ import com.prutsoft.core.annotation.NotNull;
 public interface ConfigurationParser {
 
     /**
-     * Parses the resource and returns the configuration.
+     * Parses the resource and returns the configuration builder for the parsed configuration.
      * Resource also must exist.
      *
      * @param resource the resource with configuration; can't be null.
-     * @return the parsed configuration.
+     * @return the configuration builder for the parser configuration.
      * @throws com.prutsoft.config.exception.ParseException error to parse configuration.
      */
     @NotNull
-    Configuration parse(@NotNull Resource resource) throws ParseException;
+    ConfigurationBuilder parse(@NotNull Resource resource) throws ParseException;
 
 }

@@ -9,10 +9,13 @@ package com.prutsoft.config.service;
 
 import com.prutsoft.config.Configuration;
 import com.prutsoft.config.ReloadableConfiguration;
+import com.prutsoft.config.exception.ConfigurationException;
 import com.prutsoft.config.exception.ConfigurationLoadException;
+import com.prutsoft.config.parser.ConfigurationBuilder;
 import com.prutsoft.config.parser.ConfigurationParser;
 import com.prutsoft.config.parser.xml.XmlConfigurationParser;
 import com.prutsoft.config.resource.Resource;
+import com.prutsoft.config.resource.ResourceLoadException;
 import com.prutsoft.config.resource.ResourceRegistry;
 import com.prutsoft.core.asserts.ArgumentAssert;
 import org.slf4j.Logger;
@@ -41,16 +44,16 @@ public class ConfigurationLoaderImpl implements ConfigurationLoader {
         ArgumentAssert.isNotEmpty(configurationName, "Configuration is required.");
         ArgumentAssert.isNotNull(holder, "Configuration Holder can't be null.");
 
-        // TODO - add support for multiple configuration parsers
         try {
-            Resource resource = resourceRegistry.create(configurationName);
-            if (resource == null) {
-                throw new ConfigurationLoadException("Error to load configuration ["
-                        + configurationName + "] as such resource is not supported.");
-            }
+            final Resource resource = configurationResource(configurationName);
+            final Configuration configuration = parseConfiguration(resource);
 
-            Configuration configuration = parser.parse(resource);
-            holder.addConfiguration(new ReloadableConfiguration(configuration), resource);
+            if (configuration.getReloadPolicy() != null) {
+                holder.addConfiguration(new ReloadableConfiguration(configuration), resource);
+            }
+            else {
+                holder.addConfiguration(configuration, resource);
+            }
         }
         catch (ConfigurationLoadException e) {
             throw e;
@@ -80,7 +83,7 @@ public class ConfigurationLoaderImpl implements ConfigurationLoader {
 
         try {
             resource.reload();
-            final Configuration newConfiguration = parser.parse(resource);
+            final Configuration newConfiguration = parseConfiguration(resource);
             configuration.setConfiguration(newConfiguration);
         }
         catch (Exception e) {
@@ -88,7 +91,44 @@ public class ConfigurationLoaderImpl implements ConfigurationLoader {
             log.error(msg, e);
             throw new ConfigurationLoadException(msg, e);
         }
+    }
 
+    /**
+     * Parsers the configuration resource and returns the parsed configuration.
+     *
+     * @param resource the resource to parser.
+     * @return the parsed configuration.
+     * @throws ConfigurationException error to parser configuration.
+     */
+    // TODO - add support for multiple configuration parsers
+    private Configuration parseConfiguration(Resource resource) throws ConfigurationException {
+        final ConfigurationBuilder builder = parser.parse(resource);
+
+        for (String each : builder.getConfigurationPaths()) {
+            Resource eachResource = configurationResource(each);
+            Configuration eachConfiguration = parseConfiguration(eachResource);
+            builder.addConfiguration(eachConfiguration);
+        }
+
+        return builder.toConfiguration();
+    }
+
+    /**
+     * Returns the resources for specified configuration path.
+     *
+     * @param path the configuration path.
+     * @return the found resource.
+     *
+     * @throws ResourceLoadException error to load the configuration resource by specified path.
+     * @throws ConfigurationLoadException error to get resource, maybe prefix is uknown.
+     */
+    private Resource configurationResource(String path) throws ResourceLoadException, ConfigurationLoadException {
+        Resource resource = resourceRegistry.create(path);
+        if (resource == null) {
+            throw new ConfigurationLoadException("Error to load configuration ["
+                    + path + "] as such resource is not supported.");
+        }
+        return resource;
     }
 
 }

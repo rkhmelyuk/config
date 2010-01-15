@@ -5,7 +5,11 @@
  * Application configuration framework.
  */
 
-package com.prutsoft.config.annotation;
+package com.prutsoft.config.test.annotation;
+
+import com.prutsoft.config.annotation.Configuration;
+import com.prutsoft.config.annotation.Param;
+import com.prutsoft.config.annotation.Property;
 
 /**
  * Test interface for custom annotation based configuration.

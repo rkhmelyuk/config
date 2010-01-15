@@ -5,7 +5,7 @@
  * Application configuration framework.
  */
 
-package com.prutsoft.config;
+package com.prutsoft.config.test;
 
 /**
  * TODO - Write JavaDoc comment

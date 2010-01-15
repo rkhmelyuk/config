@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * This is configuration wrapper. Used to replace old configuration with new one
- * while reload. Use concurent locking to be safe on substitute configuration.
+ * while reload. Use concurrent locking to be safe on substitute configuration.
  *
  * @author Ruslan Khmelyuk
  * @since 1.0.0, 2010-01-07
@@ -91,6 +91,16 @@ public class ReloadableConfiguration implements Configuration, ConfigurationWrap
         readWriteLock.readLock().lock();
         try {
             return configuration.getReloadPolicy();
+        }
+        finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+
+    public Collection<Configuration> getIncludedConfigurations() {
+        readWriteLock.readLock().lock();
+        try {
+            return configuration.getIncludedConfigurations();
         }
         finally {
             readWriteLock.readLock().unlock();

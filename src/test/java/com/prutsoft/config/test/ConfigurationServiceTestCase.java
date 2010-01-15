@@ -5,8 +5,11 @@
  * Application configuration framework.
  */
 
-package com.prutsoft.config;
+package com.prutsoft.config.test;
 
+import com.prutsoft.config.Configuration;
+import com.prutsoft.config.ContextMap;
+import com.prutsoft.config.Version;
 import com.prutsoft.config.service.ConfigurationService;
 import com.prutsoft.config.service.ConfigurationServiceImpl;
 import org.junit.Assert;
@@ -38,7 +41,7 @@ public class ConfigurationServiceTestCase {
             "<else><value>xxx</value></else>" +
             "</switch>" +
             "" +
-            "<pojo name='student' class='com.prutsoft.config.Student'>" +
+            "<pojo name='student' class='com.prutsoft.config.test.Student'>" +
             "<property name='firstName' value='Ruslan'/>" +
             "<property name='lastName' value='Khmelyuk'/>" +
             "</pojo>" +

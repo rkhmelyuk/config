@@ -7,7 +7,6 @@
 
 package com.prutsoft.config.parser.xml;
 
-import com.prutsoft.config.Configuration;
 import com.prutsoft.config.exception.ParseException;
 import com.prutsoft.config.parser.ConfigurationBuilder;
 import com.prutsoft.config.parser.ConfigurationParser;
@@ -48,6 +47,7 @@ public class XmlConfigurationParser implements ConfigurationParser {
     private ElementParser switchParser;
     private ElementParser setParser;
     private ElementParser pojoParser;
+    private ElementParser includeParser;
 
     public ElementParser getMetadataParser() {
         if (metadataParser == null) {
@@ -126,9 +126,20 @@ public class XmlConfigurationParser implements ConfigurationParser {
         this.pojoParser = pojoParser;
     }
 
+    public ElementParser getIncludeParser() {
+        if (includeParser == null) {
+            includeParser = new IncludeParser();
+        }
+        return includeParser;
+    }
+
+    public void setIncludeParser(ElementParser includeParser) {
+        this.includeParser = includeParser;
+    }
+
     // ----------------------------------------------------------------
 
-    public Configuration parse(@NotNull Resource resource) throws ParseException {
+    public ConfigurationBuilder parse(@NotNull Resource resource) throws ParseException {
         ArgumentAssert.isNotNull(resource, "Resource can't be null.");
         ArgumentAssert.isTrue(resource.exists(), "Resource must exist.");
 
@@ -144,7 +155,7 @@ public class XmlConfigurationParser implements ConfigurationParser {
 
             loadConfiguration(rootNode, builder);
 
-            return builder.toConfiguration();
+            return builder;
         }
         catch (Exception e) {
             String msg = "Error to parse configuration " + resource.getName();
@@ -170,6 +181,7 @@ public class XmlConfigurationParser implements ConfigurationParser {
         parsers.add(getSetParser());
         parsers.add(getSwitchParser());
         parsers.add(getPojoParser());
+        parsers.add(getIncludeParser());
         parsers.add(getMetadataParser());
         parsers.add(getReloadPolicyParser());
         return parsers;

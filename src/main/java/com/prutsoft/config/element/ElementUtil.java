@@ -7,6 +7,7 @@
 
 package com.prutsoft.config.element;
 
+import com.prutsoft.config.Configuration;
 import com.prutsoft.config.ContextMap;
 import com.prutsoft.config.NamedElement;
 import com.prutsoft.config.NamedElementsContainer;
@@ -85,7 +86,6 @@ public class ElementUtil {
         return getElementValue(null, element);
     }
 
-
     @SuppressWarnings(Warnings.Unchecked)
     public static Object getElementValue(ContextMap context, NamedElementsContainer elements,
                                          String... path) throws ValueAccessException {
@@ -118,5 +118,61 @@ public class ElementUtil {
     public static Object getElementValue(NamedElementsContainer elements,
                                          String... path) throws ValueAccessException {
         return getElementValue(null, elements, path);
+    }
+
+    /**
+     * Returns the value of the property accessed by path in the configuration.
+     * This method also checks included configurations to get the property value if not found in base configuration.
+     * <p>
+     * The order of included configurations matters.
+     * <p>
+     * Method is recursive for the included configurations.
+     *
+     * @param context the context map, can be null.
+     * @param configuration the configuration to get property from.
+     * @param path the property path.
+     * @return the property value if found, otherwise {@code null}.
+     * @throws ValueAccessException error to access property value.
+     */
+    public static Object getElementValue(ContextMap context, Configuration configuration,
+                                         String... path) throws ValueAccessException {
+        Object value = getElementValue(context, (NamedElementsContainer) configuration, path);
+        if (value == null) {
+            for (Configuration each : configuration.getIncludedConfigurations()) {
+                value = getElementValue(context, each, path);
+                if (value != null) {
+                    return value;
+                }
+            }
+        }
+
+        return value;
+    }
+
+    /**
+     * Returns the value of the property accessed by path in the configuration.
+     * This method also checks included configurations to get the property value if not found in base configuration.
+     * <p>
+     * The order of included configurations matters.
+     * <p>
+     * Method is recursive for the included configurations.
+     *
+     * @param configuration the configuration to get property from.
+     * @param path the property path.
+     * @return the property value if found, otherwise {@code null}.
+     * @throws ValueAccessException error to access property value.
+     */
+    public static Object getElementValue(Configuration configuration, String... path) throws ValueAccessException {
+        Object value = getElementValue(null, (NamedElementsContainer) configuration, path);
+        if (value == null) {
+            for (Configuration each : configuration.getIncludedConfigurations()) {
+                value = getElementValue(null, each, path);
+                if (value != null) {
+                    return value;
+                }
+            }
+        }
+
+        return value;
     }
 }
