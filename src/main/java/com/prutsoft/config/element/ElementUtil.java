@@ -15,6 +15,7 @@ import com.prutsoft.config.element.control.SwitchElement;
 import com.prutsoft.config.element.expression.ExpressionElement;
 import com.prutsoft.config.element.pojo.PojoElement;
 import com.prutsoft.config.element.property.Property;
+import com.prutsoft.config.element.reference.Reference;
 import com.prutsoft.config.element.set.PropertySet;
 import com.prutsoft.config.element.value.Value;
 import com.prutsoft.config.exception.ValueAccessException;
@@ -69,6 +70,9 @@ public class ElementUtil {
         else if (element instanceof ExpressionElement) {
             ExpressionElement expression = (ExpressionElement) element;
             return expression.getValue(context);
+        }
+        else if (element instanceof Reference) {
+            return element;
         }
 
         return null;
@@ -141,9 +145,12 @@ public class ElementUtil {
             for (Configuration each : configuration.getIncludedConfigurations()) {
                 value = getElementValue(context, each, path);
                 if (value != null) {
-                    return value;
+                    break;
                 }
             }
+        }
+        if (value instanceof Reference) {
+            value = getElementValue(context, configuration, ((Reference) value).getValue());
         }
 
         return value;
@@ -163,16 +170,6 @@ public class ElementUtil {
      * @throws ValueAccessException error to access property value.
      */
     public static Object getElementValue(Configuration configuration, String... path) throws ValueAccessException {
-        Object value = getElementValue(null, (NamedElementsContainer) configuration, path);
-        if (value == null) {
-            for (Configuration each : configuration.getIncludedConfigurations()) {
-                value = getElementValue(null, each, path);
-                if (value != null) {
-                    return value;
-                }
-            }
-        }
-
-        return value;
+        return getElementValue(null, configuration, path);
     }
 }

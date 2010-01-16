@@ -24,8 +24,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * @author Ruslan Khmelyuk
  * @since 1.0.0, 2010-01-07
- *
- * TODO - Convert to the proxy implementation
  */
 public class ReloadableConfiguration implements Configuration, ConfigurationWrapper, Serializable {
 

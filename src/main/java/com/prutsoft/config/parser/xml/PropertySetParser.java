@@ -11,6 +11,7 @@ import com.prutsoft.config.element.control.SwitchElement;
 import com.prutsoft.config.element.expression.ExpressionElement;
 import com.prutsoft.config.element.pojo.PojoElement;
 import com.prutsoft.config.element.property.Property;
+import com.prutsoft.config.element.reference.Reference;
 import com.prutsoft.config.element.set.PropertySet;
 import com.prutsoft.config.exception.ParseException;
 import com.prutsoft.config.parser.ConfigurationBuilder;
@@ -33,6 +34,7 @@ public class PropertySetParser implements ElementParser {
     private ElementParser switchParser;
     private ElementParser setParser;
     private ElementParser pojoParser;
+    private ElementParser referenceParser;
 
     public ElementParser getPropertyParser() {
         if (propertyParser == null) {
@@ -89,6 +91,16 @@ public class PropertySetParser implements ElementParser {
         this.pojoParser = pojoParser;
     }
 
+    public ElementParser getReferenceParser() {
+        if (referenceParser == null) {
+            referenceParser = new ReferenceParser();
+        }
+        return referenceParser;
+    }
+
+    public void setReferenceParser(ElementParser referenceParser) {
+        this.referenceParser = referenceParser;
+    }
 
     public boolean canParse(Node node) {
         return node != null && node.getNodeName().equals("set");
@@ -121,6 +133,9 @@ public class PropertySetParser implements ElementParser {
         for (PojoElement each : setBuilder.getPojos()) {
             set.addElement(each);
         }
+        for (Reference each : setBuilder.getReferences()) {
+            set.addElement(each);
+        }
     }
 
     private List<ElementParser> getParsersList() {
@@ -130,6 +145,7 @@ public class PropertySetParser implements ElementParser {
         parsers.add(getSetParser());
         parsers.add(getSwitchParser());
         parsers.add(getPojoParser());
+        parsers.add(getReferenceParser());
         return parsers;
     }
 }

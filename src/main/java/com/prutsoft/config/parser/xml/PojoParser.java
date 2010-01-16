@@ -11,6 +11,7 @@ import com.prutsoft.config.element.control.SwitchElement;
 import com.prutsoft.config.element.expression.ExpressionElement;
 import com.prutsoft.config.element.pojo.PojoElement;
 import com.prutsoft.config.element.property.Property;
+import com.prutsoft.config.element.reference.Reference;
 import com.prutsoft.config.element.set.PropertySet;
 import com.prutsoft.config.exception.ParseException;
 import com.prutsoft.config.parser.ConfigurationBuilder;
@@ -33,6 +34,7 @@ public class PojoParser implements ElementParser {
     private ElementParser switchParser;
     private ElementParser setParser;
     private ElementParser pojoParser;
+    private ElementParser referenceParser;
     private Node classAttribute;
     private Node nameAttribute;
 
@@ -91,6 +93,16 @@ public class PojoParser implements ElementParser {
         this.pojoParser = pojoParser;
     }
 
+    public ElementParser getReferenceParser() {
+        if (referenceParser == null) {
+            referenceParser = new ReferenceParser();
+        }
+        return referenceParser;
+    }
+
+    public void setReferenceParser(ElementParser referenceParser) {
+        this.referenceParser = referenceParser;
+    }
 
     public boolean canParse(Node node) {
         return node != null && node.getNodeName().equals("pojo");
@@ -125,6 +137,9 @@ public class PojoParser implements ElementParser {
             for (PojoElement each : pojoBuilder.getPojos()) {
                 pojo.addElement(each);
             }
+            for (Reference each : pojoBuilder.getReferences()) {
+                pojo.addElement(each);
+            }
         }
         catch (ClassNotFoundException e) {
             throw new ParseException("Error to parser POJO element " + name + ", cause:", e);
@@ -138,6 +153,7 @@ public class PojoParser implements ElementParser {
         parsers.add(getSetParser());
         parsers.add(getSwitchParser());
         parsers.add(getPojoParser());
+        parsers.add(getReferenceParser());
         return parsers;
     }
 }

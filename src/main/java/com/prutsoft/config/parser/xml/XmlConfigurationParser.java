@@ -48,6 +48,7 @@ public class XmlConfigurationParser implements ConfigurationParser {
     private ElementParser setParser;
     private ElementParser pojoParser;
     private ElementParser includeParser;
+    private ElementParser referenceParser;
 
     public ElementParser getMetadataParser() {
         if (metadataParser == null) {
@@ -137,6 +138,17 @@ public class XmlConfigurationParser implements ConfigurationParser {
         this.includeParser = includeParser;
     }
 
+    public ElementParser getReferenceParser() {
+        if (referenceParser == null) {
+            referenceParser = new ReferenceParser();
+        }
+        return referenceParser;
+    }
+
+    public void setReferenceParser(ElementParser referenceParser) {
+        this.referenceParser = referenceParser;
+    }
+
     // ----------------------------------------------------------------
 
     public ConfigurationBuilder parse(@NotNull Resource resource) throws ParseException {
@@ -181,9 +193,10 @@ public class XmlConfigurationParser implements ConfigurationParser {
         parsers.add(getSetParser());
         parsers.add(getSwitchParser());
         parsers.add(getPojoParser());
-        parsers.add(getIncludeParser());
+        parsers.add(getReferenceParser());
         parsers.add(getMetadataParser());
         parsers.add(getReloadPolicyParser());
+        parsers.add(getIncludeParser());
         return parsers;
     }
 

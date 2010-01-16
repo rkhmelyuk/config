@@ -34,13 +34,17 @@ public class ConfigurationServiceTestCase {
             "<expression name='t' value='\"wdt\"'/>" +
             "<expression name='tL' value='23+27'/>" +
             "<property name='t1'><value type='integer'>2292</value></property>" +
-            "<set name='x1'><set name='x1'><property name='xxx' value='23' type='integer'/></set><property name='x2' value='xx'/></set>" +
+            "<set name='x1'>" +
+            "<ref name='t1121' value='t'/>" +
+            "<set name='x1'>" +
+            "<property name='xxx' value='23' type='integer'/></set><property name='x2' value='xx'/></set>" +
             "<switch name='ttk'>" +
             "<on condition='x == 1'><value>x1</value></on>" +
             "<on condition='x == 2'><value>x2</value></on>" +
             "<else><value>xxx</value></else>" +
             "</switch>" +
-            "" +
+            "<ref name='test' value='x1:x1:xxx'/>" +
+            "<ref name='test2' value='t'/>" +
             "<pojo name='student' class='com.prutsoft.config.test.Student'>" +
             "<property name='firstName' value='Ruslan'/>" +
             "<property name='lastName' value='Khmelyuk'/>" +
@@ -103,6 +107,15 @@ public class ConfigurationServiceTestCase {
 
         Assert.assertEquals("Ruslan", s.getFirstName());
         Assert.assertEquals("Khmelyuk", s.getLastName());
+    }
+
+    @Test
+    public void testReference() throws Exception {
+        Configuration config = getConfigurationService().configuration("test", "1.0.23");
+
+        Assert.assertEquals(23, (long) config.getInteger("test"));
+        Assert.assertEquals("wdt", config.getString("test2"));
+        Assert.assertEquals("wdt", config.getString("x1:t1121"));
     }
 
 }

@@ -17,6 +17,7 @@ import com.prutsoft.config.element.metadata.Metadata;
 import com.prutsoft.config.element.metadata.MetadataProperty;
 import com.prutsoft.config.element.pojo.PojoElement;
 import com.prutsoft.config.element.property.Property;
+import com.prutsoft.config.element.reference.Reference;
 import com.prutsoft.config.element.reload.ReloadPolicy;
 import com.prutsoft.config.element.set.PropertySet;
 import com.prutsoft.config.element.value.Value;
@@ -47,6 +48,7 @@ public class ConfigurationBuilder {
     private List<SwitchElement> switches = new ArrayList<SwitchElement>();
     private List<ExpressionElement> expressions = new ArrayList<ExpressionElement>();
     private List<MetadataProperty> metadataProperties = new ArrayList<MetadataProperty>();
+    private List<Reference> references = new ArrayList<Reference>();
 
     private List<String> configurationsPaths = new ArrayList<String>();
     private List<Configuration> configurations = new ArrayList<Configuration>();
@@ -129,6 +131,20 @@ public class ConfigurationBuilder {
             return true;
         }
         return false;
+    }
+
+    public boolean addReference(Reference reference) {
+        ArgumentAssert.isNotNull(reference, "Property can't be null.");
+        return references.add(reference);
+    }
+
+    public Reference getReference(String name) {
+        for (Reference each : references) {
+            if (each.getName().equals(name)) {
+                return each;
+            }
+        }
+        return null;
     }
 
     public boolean addSet(PropertySet set) {
@@ -227,6 +243,10 @@ public class ConfigurationBuilder {
         return Collections.unmodifiableList(expressions);
     }
 
+    public List<Reference> getReferences() {
+        return Collections.unmodifiableList(references);
+    }
+
     public List<MetadataProperty> getMetadataProperties() {
         return Collections.unmodifiableList(metadataProperties);
     }
@@ -244,6 +264,7 @@ public class ConfigurationBuilder {
         addProperties(config);
         addExpressions(config);
         addPojos(config);
+        addReferences(config);
 
         return config;
     }
@@ -254,6 +275,12 @@ public class ConfigurationBuilder {
 
     private void addProperties(ConfigurationImpl config) throws ConfigurationException {
         for (NamedElement each : properties) {
+            addNamedElement(config, each);
+        }
+    }
+
+    private void addReferences(ConfigurationImpl config) throws ConfigurationException {
+        for (NamedElement each : references) {
             addNamedElement(config, each);
         }
     }
