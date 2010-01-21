@@ -7,10 +7,7 @@
 
 package com.prutsoft.config.element;
 
-import com.prutsoft.config.Configuration;
-import com.prutsoft.config.ContextMap;
-import com.prutsoft.config.NamedElement;
-import com.prutsoft.config.NamedElementsContainer;
+import com.prutsoft.config.*;
 import com.prutsoft.config.element.control.SwitchElement;
 import com.prutsoft.config.element.expression.ExpressionElement;
 import com.prutsoft.config.element.pojo.PojoElement;
@@ -92,37 +89,31 @@ public class ElementUtil {
 
     @SuppressWarnings(Warnings.Unchecked)
     public static Object getElementValue(ContextMap context, NamedElementsContainer elements,
-                                         String... path) throws ValueAccessException {
+                                         Path path) throws ValueAccessException {
         if (elements == null) {
             throw new ValueAccessException("No value found: elements map is null.");
         }
-        if (path == null || path.length == 0) {
+        if (path == null || path.isEmpty()) {
             throw new ValueAccessException("No value found: path is wrong.");
         }
 
-        final String name = path[0];
-        if (path.length == 1) {
+        final String name = path.getSingleName();
+        if (path.isSimple()) {
             if (name.contains(":")) {
-                return getElementValue(elements, name.split(":"));
+                return getElementValue(null, elements, new Path(name));
             }
             return getElementValue(context, elements.getElement(name));
         }
         else {
             NamedElement element = elements.getElement(name);
             if (element != null && element instanceof NamedElementsContainer) {
-                String[] newPath = new String[path.length - 1];
-                System.arraycopy(path, 1, newPath, 0, newPath.length);
-                return getElementValue((NamedElementsContainer) element, newPath);
+                return getElementValue(null, (NamedElementsContainer) element, path.getPathWithoutRoot());
             }
         }
 
         return null;
     }
 
-    public static Object getElementValue(NamedElementsContainer elements,
-                                         String... path) throws ValueAccessException {
-        return getElementValue(null, elements, path);
-    }
 
     /**
      * Returns the value of the property accessed by path in the configuration.
@@ -140,7 +131,7 @@ public class ElementUtil {
      */
     public static Object getElementValue(ContextMap context, Configuration configuration,
                                          String... path) throws ValueAccessException {
-        Object value = getElementValue(context, (NamedElementsContainer) configuration, path);
+        Object value = getElementValue(context, configuration, new Path(path));
         if (value == null) {
             for (Configuration each : configuration.getIncludedConfigurations()) {
                 value = getElementValue(context, each, path);
@@ -154,22 +145,5 @@ public class ElementUtil {
         }
 
         return value;
-    }
-
-    /**
-     * Returns the value of the property accessed by path in the configuration.
-     * This method also checks included configurations to get the property value if not found in base configuration.
-     * <p>
-     * The order of included configurations matters.
-     * <p>
-     * Method is recursive for the included configurations.
-     *
-     * @param configuration the configuration to get property from.
-     * @param path the property path.
-     * @return the property value if found, otherwise {@code null}.
-     * @throws ValueAccessException error to access property value.
-     */
-    public static Object getElementValue(Configuration configuration, String... path) throws ValueAccessException {
-        return getElementValue(null, configuration, path);
     }
 }

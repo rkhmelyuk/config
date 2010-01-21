@@ -101,145 +101,146 @@ public class ConfigurationImpl implements Configuration {
         return elements.containsKey(name);
     }
 
-    public <T> T getPojo(Class<T> clazz, String property) {
-        return null;
+    @SuppressWarnings(Warnings.Unchecked)
+    public <T> T getPojo(Class<T> clazz, String path) {
+        return (T) getValue(path);
     }
 
-    public Integer getInteger(String... property) {
-        return (Integer) ElementUtil.getElementValue(this, property);
+    public Integer getInteger(String... path) {
+        return (Integer) ElementUtil.getElementValue(null, this, path);
     }
 
-    public Long getLong(String... property) {
-        return (Long) ElementUtil.getElementValue(this, property);
+    public Long getLong(String... path) {
+        return (Long) ElementUtil.getElementValue(null, this, path);
     }
 
-    public Boolean getBoolean(String... property) {
-        return (Boolean) ElementUtil.getElementValue(this, property);
+    public Boolean getBoolean(String... path) {
+        return (Boolean) ElementUtil.getElementValue(null, this, path);
     }
 
-    public Float getFloat(String... property) {
-        return (Float) ElementUtil.getElementValue(this, property);
+    public Float getFloat(String... path) {
+        return (Float) ElementUtil.getElementValue(null, this, path);
     }
 
-    public Double getDouble(String... property) {
-        return (Double) ElementUtil.getElementValue(this, property);
+    public Double getDouble(String... path) {
+        return (Double) ElementUtil.getElementValue(null, this, path);
     }
 
-    public String getString(String... property) {
-        Object result = ElementUtil.getElementValue(this, property);
+    public String getString(String... path) {
+        Object result = ElementUtil.getElementValue(null, this, path);
         return result != null ? String.valueOf(result) : null;
     }
 
     @SuppressWarnings(Warnings.Unchecked)
-    public List<String> getStringsList(String... property) {
-        return (List<String>) ElementUtil.getElementValue(this, property);
+    public List<String> getStringsList(String... path) {
+        return (List<String>) ElementUtil.getElementValue(null, this, path);
     }
 
     @SuppressWarnings(Warnings.Unchecked)
-    public Set<String> getStringsSet(String... property) {
-        return (Set<String>) ElementUtil.getElementValue(this, property);
+    public Set<String> getStringsSet(String... path) {
+        return (Set<String>) ElementUtil.getElementValue(null, this, path);
     }
 
     @SuppressWarnings(Warnings.Unchecked)
-    public Map<String, String> getDictionary(String... property) {
-        return (Map<String, String>) ElementUtil.getElementValue(this, property);
+    public Map<String, String> getDictionary(String... path) {
+        return (Map<String, String>) ElementUtil.getElementValue(null, this, path);
     }
 
-    public Object getValue(String... property) {
-        return ElementUtil.getElementValue(this, property);
+    public Object getValue(String... path) {
+        return ElementUtil.getElementValue(null, this, path);
     }
 
-    public Integer getInteger(String property, ContextMap context) {
-        return (Integer) ElementUtil.getElementValue(context, this, property);
+    public Integer getInteger(String property, ContextMap path) {
+        return (Integer) ElementUtil.getElementValue(path, this, property);
     }
 
-    public Long getLong(String property, ContextMap context) {
-        return (Long) ElementUtil.getElementValue(context, this, property);
+    public Long getLong(String path, ContextMap context) {
+        return (Long) ElementUtil.getElementValue(context, this, path);
     }
 
-    public Boolean getBoolean(String property, ContextMap context) {
-        return (Boolean) ElementUtil.getElementValue(context, this, property);
+    public Boolean getBoolean(String path, ContextMap context) {
+        return (Boolean) ElementUtil.getElementValue(context, this, path);
     }
 
-    public Float getFloat(String property, ContextMap context) {
-        return (Float) ElementUtil.getElementValue(context, this, property);
+    public Float getFloat(String path, ContextMap context) {
+        return (Float) ElementUtil.getElementValue(context, this, path);
     }
 
-    public Double getDouble(String property, ContextMap context) {
-        return (Double) ElementUtil.getElementValue(context, this, property);
+    public Double getDouble(String path, ContextMap context) {
+        return (Double) ElementUtil.getElementValue(context, this, path);
     }
 
-    public String getString(String property, ContextMap context) {
-        Object result = ElementUtil.getElementValue(context, this, property);
+    public String getString(String path, ContextMap context) {
+        Object result = ElementUtil.getElementValue(context, this, path);
         return result != null ? String.valueOf(result) : null;
     }
 
     @SuppressWarnings(Warnings.Unchecked)
-    public List<String> getStringsList(String property, ContextMap context) {
-        return (List<String>) ElementUtil.getElementValue(context, this, property);
+    public List<String> getStringsList(String path, ContextMap context) {
+        return (List<String>) ElementUtil.getElementValue(context, this, path);
     }
 
     @SuppressWarnings(Warnings.Unchecked)
-    public Set<String> getStringsSet(String property, ContextMap context) {
-        return (Set<String>) ElementUtil.getElementValue(context, this, property);
+    public Set<String> getStringsSet(String path, ContextMap context) {
+        return (Set<String>) ElementUtil.getElementValue(context, this, path);
     }
 
     @SuppressWarnings(Warnings.Unchecked)
-    public Map<String, String> getDictionary(String property, ContextMap context) {
-        return (Map<String, String>) ElementUtil.getElementValue(context, this, property);
+    public Map<String, String> getDictionary(String path, ContextMap context) {
+        return (Map<String, String>) ElementUtil.getElementValue(context, this, path);
     }
 
-    public Object getValue(String property, ContextMap context) {
-        return ElementUtil.getElementValue(context, this, property);
+    public Object getValue(String path, ContextMap context) {
+        return ElementUtil.getElementValue(context, this, path);
     }
 
-    public Integer getInteger(String property, Integer defaultValue) {
-        final Integer value = getInteger(property);
+    public Integer getInteger(String path, Integer defaultValue) {
+        final Integer value = getInteger(path);
         return value != null ? value : defaultValue;
     }
 
-    public Long getLong(String property, Long defaultValue) {
-        final Long value = getLong(property);
+    public Long getLong(String path, Long defaultValue) {
+        final Long value = getLong(path);
         return value != null ? value : defaultValue;
     }
 
-    public Boolean getBoolean(String property, Boolean defaultValue) {
-        final Boolean value = getBoolean(property);
+    public Boolean getBoolean(String path, Boolean defaultValue) {
+        final Boolean value = getBoolean(path);
         return value != null ? value : defaultValue;
     }
 
-    public Float getFloat(String property, Float defaultValue) {
-        final Float value = getFloat(property);
+    public Float getFloat(String path, Float defaultValue) {
+        final Float value = getFloat(path);
         return value != null ? value : defaultValue;
     }
 
-    public Double getDouble(String property, Double defaultValue) {
-        final Double value = getDouble(property);
+    public Double getDouble(String path, Double defaultValue) {
+        final Double value = getDouble(path);
         return value != null ? value : defaultValue;
     }
 
-    public String getString(String property, String defaultValue) {
-        Object result = getString(property);
+    public String getString(String path, String defaultValue) {
+        Object result = getString(path);
         return result != null ? String.valueOf(result) : defaultValue;
     }
 
-    public List<String> getStringsList(String property, List<String> defaultValue) {
-        final List<String> value = getStringsList(property);
+    public List<String> getStringsList(String path, List<String> defaultValue) {
+        final List<String> value = getStringsList(path);
         return value != null ? value : defaultValue;
     }
 
-    public Set<String> getStringsSet(String property, Set<String> defaultValue) {
-        final Set<String> value = getStringsSet(property);
+    public Set<String> getStringsSet(String path, Set<String> defaultValue) {
+        final Set<String> value = getStringsSet(path);
         return value != null ? value : defaultValue;
     }
 
-    public Map<String, String> getDictionary(String property, Map<String, String> defaultValue) {
-        final Map<String, String> value = getDictionary(property);
+    public Map<String, String> getDictionary(String path, Map<String, String> defaultValue) {
+        final Map<String, String> value = getDictionary(path);
         return value != null ? value : defaultValue;
     }
 
-    public Object getValue(String property, Map<String, String> defaultValue) {
-        final Object value = getValue(property);
+    public Object getValue(String path, Map<String, String> defaultValue) {
+        final Object value = getValue(path);
         return value != null ? value : defaultValue;
     }
 
