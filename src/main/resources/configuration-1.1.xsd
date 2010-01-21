@@ -1,0 +1,158 @@
+<?xml version="1.0" standalone="yes"?>
+<!--
+  ~ Copyright (c) 2010 Ruslan Khmelyuk, Prutsoft
+  ~ All rights reserved.
+  ~
+  ~ Application configuration framework.
+  -->
+
+<xs:schema xmlns="urn:config.prutsoft.com"
+           targetNamespace="urn:config.prutsoft.com"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:element name="configuration">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="metadata" type="metadata" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="reload" type="reload" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="include" type="include" minOccurs="0" maxOccurs="unbounded"/>
+
+                <xs:group ref="properties"/>
+
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="version" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:group name="properties">
+        <xs:sequence>
+            <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="expression" type="expression" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="set" type="set" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="switch" type="switch" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="pojo" type="pojo" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="ref" type="ref" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:complexType name="metadata">
+        <xs:sequence>
+            <xs:element name="property" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                    <xs:attribute name="value" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="include">
+        <xs:attribute name="path" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="reload">
+        <xs:sequence>
+            <xs:element name="onchange" type="reload-onchange" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="reload-onchange">
+        <xs:attribute name="check-every" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="load-policy-onload">
+        <xs:attribute name="execute" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="property">
+        <xs:sequence>
+            <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="value" type="value" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="optional"/>
+        <xs:attribute name="value-type" type="value-types" use="optional" default="string"/>
+    </xs:complexType>
+
+    <xs:complexType name="expression">
+        <xs:sequence>
+            <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="ref">
+        <xs:sequence>
+            <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="set">
+        <xs:sequence>
+            <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+            <xs:group ref="properties"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="pojo">
+        <xs:sequence>
+            <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+            <xs:group ref="properties"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="class" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="switch">
+        <xs:sequence>
+            <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+            <xs:element name="on" type="case-on" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="else" type="case-otherwise" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="value" mixed="true">
+        <xs:attribute name="type" type="value-types" use="optional" default="string"/>
+    </xs:complexType>
+
+    <xs:complexType name="case-on">
+        <xs:sequence>
+            <xs:element name="value" type="value" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="condition" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="case-otherwise">
+        <xs:sequence>
+            <xs:element name="value" type="value" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="value-types">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="boolean"/>
+            <xs:enumeration value="byte"/>
+            <xs:enumeration value="short"/>
+            <xs:enumeration value="integer"/>
+            <xs:enumeration value="int"/>
+            <xs:enumeration value="long"/>
+            <xs:enumeration value="float"/>
+            <xs:enumeration value="double"/>
+            <xs:enumeration value="string"/>
+
+            <xs:enumeration value="set"/>
+            <xs:enumeration value="list"/>
+            <xs:enumeration value="dict"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -5,8 +5,49 @@
   ~ Application configuration framework.
   -->
 
-<configuration name="config3" version="1.0.0">
+<configuration xmlns="urn:config.prutsoft.com" name="config3" version="1.0.0">
+
+    <metadata>
+        <property name='x' value='y'/>
+        <property name='x2' value='y2'/>
+    </metadata>
+
+    <reload>
+        <onchange check-every='5s'/>
+    </reload>
+
+    <include path="asdfasdf"/>
 
     <property name="Ruslan" value="Khmelyuk"/>
-    
+
+    <set name='x1'>
+        <ref name='t1121' value='t'/>
+        <expression name='t' value='"wdt"'/>
+    </set>
+
+    <switch name="test">
+        <on condition='x == 1'>
+            <value>x1</value>
+        </on>
+        <on condition='x == 2'>
+            <value>x2</value>
+        </on>
+        <else>
+            <value>xxx</value>
+        </else>
+    </switch>
+
+    <pojo name='student' class='com.prutsoft.config.test.Student'>
+        <property name='firstName' value='Ruslan'/>
+        <property name='lastName' value='Khmelyuk'/>
+        <ref name='t1121' value='t'/>
+        <expression name='t' value='"wdt"'/>
+    </pojo>
+
+
+
+
+    <expression name='t' value='"wdt"'/>
+
+
 </configuration>
