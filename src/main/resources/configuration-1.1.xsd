@@ -73,7 +73,7 @@
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
         <xs:attribute name="value" type="xs:string" use="optional"/>
-        <xs:attribute name="value-type" type="value-types" use="optional" default="string"/>
+        <xs:attribute name="type" type="value-types" use="optional" default="string"/>
     </xs:complexType>
 
     <xs:complexType name="expression">
