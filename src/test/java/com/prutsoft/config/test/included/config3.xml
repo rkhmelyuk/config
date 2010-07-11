@@ -16,8 +16,6 @@
         <onchange check-every='5s'/>
     </reload>
 
-    <include path="asdfasdf"/>
-
     <property name="Ruslan" value="Khmelyuk"/>
 
     <set name='x1'>
