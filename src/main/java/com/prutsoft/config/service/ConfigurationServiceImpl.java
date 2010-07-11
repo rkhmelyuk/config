@@ -18,22 +18,31 @@ import com.prutsoft.core.code.Warnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Proxy;
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * The configuration service implementation.
  *
- * @author Ruslan Khmelyuk
  * @see com.prutsoft.config.service.ConfigurationService
+ *
+ * @author Ruslan Khmelyuk
  * @since 1.0.0, 2010-01-07
  */
 public class ConfigurationServiceImpl implements ConfigurationService {
 
     private static final Logger log = LoggerFactory.getLogger(ConfigurationServiceImpl.class);
 
+    // TODO - remake this part with Abstract method or with init() method
+    // Don't instantiate fields at object construction 
+
     private ResourceRegistry resourceRegistry = ResourceRegistry.create();
     private ConfigurationHolder configurationsHolder = new ConfigurationHolder();
     private ConfigurationLoader configurationLoader = new ConfigurationLoaderImpl(resourceRegistry);
+
     private ReloadService reloadService = new ReloadServiceImpl(configurationLoader, configurationsHolder);
 
     public ResourceRegistry getResourceRegistry() {
@@ -53,7 +62,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     public void destroy() {
-        reloadService.shutdown();
+        getReloadService().shutdown();
         configurationsHolder.removeConfigurations();
 
         log.info("Destroyed configuration service");
@@ -111,7 +120,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
 
         Configuration configuration = configuration(name, version);
-
+        
         if (configuration == null) {
             throw new ConfigurationBindException("Can't find configuration with name "
                     + name + " and version " + version);
