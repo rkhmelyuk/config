@@ -8,13 +8,7 @@
     <packaging>jar</packaging>
 
     <version>1.0.0</version>
-    <name>Prutsoft Configuration library.</name>
-    <url>http://www.prutsoft.com/projects/config</url>
-
-    <organization>
-        <name>Prutsoft</name>
-        <url>http://www.prutsoft.com</url>
-    </organization>
+    <name>Configuration library.</name>
 
     <dependencies>
         <dependency>
@@ -127,13 +121,8 @@
 
     <developers>
         <developer>
-            <id>rkhmelyuk</id>
             <name>Ruslan Khmelyuk</name>
-            <email>ruslan.khmelyuk@prutsoft.com</email>
-            <organization>Prutsoft</organization>
-            <roles>
-                <role>Developer</role>
-            </roles>
+            <email>ruslan.khmelyuk@gmail.com</email>
         </developer>
     </developers>
 
